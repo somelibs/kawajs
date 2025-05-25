@@ -115,6 +115,11 @@ class ResourceCall extends Smart {
       status: payload.status || _.snakeCase(response.statusText),
       message: payload.message || response.statusText,
       ...(responseTransform ? this.transform(body, responseTransform) : body),
+      _request: {
+        url: this.preflightRequestUrl.toString(),
+        options: this.preflightRequestOptions,
+        resource: this.options
+      }
     });
     return error;
   }
@@ -321,29 +326,31 @@ class ResourceCall extends Smart {
   requestProcessor = async (payload) => {
     const { baseUrl, path, mock, expiry, cache, method } = this.options;
     const parsedUrl = this.requestUrl(baseUrl, path);
-    const url = new URL(parsedUrl);
-    const searchParams = queryString.parse(url.search);
+    const requestUrl = new URL(parsedUrl);
+    const searchParams = queryString.parse(requestUrl.search);
     const pagination = this.getRequestPaginator();
     const params = this.getRequestParams();
     const requestOptions = await this.buildRequest(payload);
     if (mock) return this.mock(requestOptions);
     if (params || pagination) {
-      url.search = new URLSearchParams({
+      requestUrl.search = new URLSearchParams({
         ...searchParams,
         ...pagination,
         ...params,
       });
     }
-    const shadow = throttler.match({ ...requestOptions, url: url.toString() });
+    const shadow = throttler.match({ ...requestOptions, url: requestUrl.toString() });
     if (shadow) {
       this.uniqueId = shadow.id;
       await shadow.promise;
       return shadow.request;
     }
+    this.preflightRequestUrl = requestUrl;
+    this.preflightRequestOptions = requestOptions;
     const request = (method === 'GET' && expiry && cache !== false)
-      ? this.cachedFetch(url, requestOptions, expiry)
-      : fetch(url, requestOptions);
-    this.uniqueId = throttler.push(request, { ...requestOptions, url: url.toString() });
+      ? this.cachedFetch(requestUrl, requestOptions, expiry)
+      : fetch(requestUrl, requestOptions);
+    this.uniqueId = throttler.push(request, { ...requestOptions, url: requestUrl.toString() });
     return request;
 
   };

@@ -1,5 +1,6 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -8,7 +9,6 @@ var _flattenDeep2 = _interopRequireDefault(require("lodash/flattenDeep"));
 var _isEmpty2 = _interopRequireDefault(require("lodash/isEmpty"));
 var _each2 = _interopRequireDefault(require("lodash/each"));
 var _noImportant = require("aphrodite/no-important");
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 var _Aphrodite$extend = _noImportant.StyleSheet.extend([{
     selectorHandler: function selectorHandler(selector, baseSelector, generateSubtreeStyles) {
       var nestedTags = [];

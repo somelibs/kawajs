@@ -1,5 +1,6 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 exports.__esModule = true;
 exports["default"] = select;
 var _get2 = _interopRequireDefault(require("lodash/get"));
@@ -12,7 +13,6 @@ var _isString2 = _interopRequireDefault(require("lodash/isString"));
 var _each2 = _interopRequireDefault(require("lodash/each"));
 var _first2 = _interopRequireDefault(require("lodash/first"));
 var _isArray2 = _interopRequireDefault(require("lodash/isArray"));
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 var argsToArray = function argsToArray() {
   var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   return (0, _isArray2["default"])((0, _first2["default"])(args)) ? (0, _first2["default"])(args) : args;
