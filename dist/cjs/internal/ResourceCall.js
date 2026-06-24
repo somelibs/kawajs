@@ -496,7 +496,11 @@ var ResourceCall = /*#__PURE__*/function (_Smart) {
         message: payload.message || response.statusText
       }, responseTransform ? this.transform(body, responseTransform) : body), {}, {
         _request: {
-          url: this.preflightRequestUrl.toString(),
+          // `preflightRequestUrl` is unset on the dedup/shadow path (an identical
+          // in-flight request short-circuits before it is assigned), so guard the
+          // toString() — otherwise a deduped request that errors (e.g. a 404)
+          // throws here and masks the real HTTP error with a TypeError.
+          url: this.preflightRequestUrl ? this.preflightRequestUrl.toString() : null,
           options: this.preflightRequestOptions,
           resource: this.options
         }
