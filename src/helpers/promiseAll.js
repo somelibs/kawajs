@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-export default async function (object, async = true) {
+export default async function promiseAll(object, async = true) {
   const resolvedObject = _.isArray(object) ? [] : {};
   const keys = Object.keys(object);
   if (async === false) {

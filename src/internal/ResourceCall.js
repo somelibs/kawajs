@@ -122,8 +122,8 @@ class ResourceCall extends Smart {
         // throws here and masks the real HTTP error with a TypeError.
         url: this.preflightRequestUrl ? this.preflightRequestUrl.toString() : null,
         options: this.preflightRequestOptions,
-        resource: this.options
-      }
+        resource: this.options,
+      },
     });
     return error;
   }

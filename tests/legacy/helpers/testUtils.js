@@ -23,7 +23,8 @@ function diveTo(shallowWrapper, identifier, options = { context: {} }) {
   // Enzyme limitation workaround: until https://github.com/airbnb/enzyme/issues/664 is resolved,
   // it's necessary to manually pass down child context like this
   const context = _.extend(
-    {}, instance && instance.getChildContext ? instance.getChildContext() : {},
+    {},
+    instance && instance.getChildContext ? instance.getChildContext() : {},
     options.context,
   );
 

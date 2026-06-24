@@ -19,7 +19,7 @@ describe('Reducer Class', () => {
   test('the assign method should merge the two objects if given two objects', () => {
     const obj1 = { foo: 'bar', test: { foo: 'bar' } };
     const obj2 = { bar: 'foo', test: { bar: 'foo' } };
-    expect(reducer.assign(obj1, obj2)).toEqual(Object.assign({}, obj1, obj2));
+    expect(reducer.assign(obj1, obj2)).toEqual({ ...obj1, ...obj2 });
 
   });
 

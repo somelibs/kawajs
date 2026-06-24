@@ -169,9 +169,9 @@ class Reducer extends Smart {
       const currentPath = path ? _.concat(path, key) : false;
       const currentItem = _.isObject(current) ? current[key] : null;
       const nextDepth = (depth < 0 || depth > 1) ? _.clone(depth) - 1 : false;
-      state[key] = nextDepth && nextItem ? this._reduce(
-        currentItem, nextItem, action, currentPath, nextDepth,
-      ) : nextItem;
+      state[key] = nextDepth && nextItem
+        ? this._reduce(currentItem, nextItem, action, currentPath, nextDepth)
+        : nextItem;
     });
     return this._assignNext(current, state);
   }
@@ -187,9 +187,9 @@ class Reducer extends Smart {
         _.each(nextItems, (nextItem, nextKey) => {
           const matchKey = (nextItem && nextItem[unionKey]) ? nextItem[unionKey] : false;
           if (matchKey && currentItem[unionKey] === matchKey) {
-            union[key] = nextDepth ? this._reduce(
-              currentItem, nextItem, action, currentPath, nextDepth,
-            ) : nextItem;
+            union[key] = nextDepth
+              ? this._reduce(currentItem, nextItem, action, currentPath, nextDepth)
+              : nextItem;
             nextItems[nextKey] = null;
           }
         });
@@ -200,7 +200,7 @@ class Reducer extends Smart {
 
   _assignNext(current, next) {
     if (_.isPlainObject(current) && _.isPlainObject(next)) {
-      return Object.assign({}, current, next);
+      return { ...current, ...next };
     }
     return (next === undefined ? current : next);
   }
